@@ -20,6 +20,9 @@ class MainActivity : AppCompatActivity() {
     private var firstTurn = PlayerTurn.CROSS
     private var currentTurn = PlayerTurn.CROSS
 
+    private var crossesWins: Int = 0
+    private var circlesWins: Int = 0
+
     private lateinit var binding: ActivityMainBinding
     private var boardList = mutableListOf<Button>()
 
@@ -57,9 +60,12 @@ class MainActivity : AppCompatActivity() {
         addToBoard(view)
 
         if (checkForWin("O")) {
+            circlesWins++
             alertResult("Circles Won")
             return
+
         } else if (checkForWin("X")) {
+            crossesWins++
             alertResult("Crosses Won")
             return
         }
@@ -69,7 +75,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
     }
-
 
     private fun isGameDraw(): Boolean {
         for (button in boardList) {
@@ -98,8 +103,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun alertResult(title: String) {
+        val message = "\nCircles Score: $circlesWins\n\nCrosses Score: $crossesWins"
         AlertDialog.Builder(this)
             .setTitle(title)
+            .setMessage(message)
             .setPositiveButton("Reset Game") { _, _ ->
                 resetBoard()
             }
@@ -142,7 +149,6 @@ class MainActivity : AppCompatActivity() {
 
         return false
     }
-
 
     private fun match(button: Button, symbol: String): Boolean = button.text == symbol
 }
