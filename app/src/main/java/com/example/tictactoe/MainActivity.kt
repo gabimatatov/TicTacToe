@@ -55,13 +55,24 @@ class MainActivity : AppCompatActivity() {
             return
 
         addToBoard(view)
-        if(isGameDraw()){
+
+        if (checkForWin("O")) {
+            alertResult("Circles Won")
+            return
+        } else if (checkForWin("X")) {
+            alertResult("Crosses Won")
+            return
+        }
+
+        if(isGameDraw()) {
             alertResult("Game Draw")
+            return
         }
     }
 
+
     private fun isGameDraw(): Boolean {
-        for (button in boardList){
+        for (button in boardList) {
             if(button.text == "")
                 return false
         }
@@ -105,4 +116,33 @@ class MainActivity : AppCompatActivity() {
         else
             firstTurn = PlayerTurn.CIRCLE
     }
+
+    private fun checkForWin(string: String): Boolean {
+        // Rows Win (Horizontal)
+        if (match(binding.buttonX00, string) && match(binding.buttonX01, string) && match(binding.buttonX02, string))
+            return true
+        if (match(binding.buttonX10, string) && match(binding.buttonX11, string) && match(binding.buttonX12, string))
+            return true
+        if (match(binding.buttonX20, string) && match(binding.buttonX21, string) && match(binding.buttonX22, string))
+            return true
+
+        // Columns Win (Vertical)
+        if (match(binding.buttonX00, string) && match(binding.buttonX10, string) && match(binding.buttonX20, string))
+            return true
+        if (match(binding.buttonX01, string) && match(binding.buttonX11, string) && match(binding.buttonX21, string))
+            return true
+        if (match(binding.buttonX02, string) && match(binding.buttonX12, string) && match(binding.buttonX22, string))
+            return true
+
+        // Diagonals Win
+        if (match(binding.buttonX00, string) && match(binding.buttonX11, string) && match(binding.buttonX22, string))
+            return true
+        if (match(binding.buttonX02, string) && match(binding.buttonX11, string) && match(binding.buttonX20, string))
+            return true
+
+        return false
+    }
+
+
+    private fun match(button: Button, symbol: String): Boolean = button.text == symbol
 }
