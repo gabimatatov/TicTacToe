@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private var firstTurn = PlayerTurn.CROSS
     private var currentTurn = PlayerTurn.CROSS
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private var boardList = mutableListOf<Button>()
 
     // onCreate Function
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -56,16 +56,22 @@ class MainActivity : AppCompatActivity() {
         addToBoard(view)
     }
 
-    private fun addToBoard(button: Button){
+    private fun addToBoard(button: Button) {
         if (button.text != "")
             return
-        if (currentTurn == PlayerTurn.CIRCLE){
+        if (currentTurn == PlayerTurn.CIRCLE) {
             button.text = "O"
             currentTurn = PlayerTurn.CROSS
-        }
-        else if (currentTurn == PlayerTurn.CROSS){
+        } else if (currentTurn == PlayerTurn.CROSS) {
             button.text = "X"
             currentTurn = PlayerTurn.CIRCLE
         }
+
+        binding.turnTV.text = if (currentTurn == PlayerTurn.CROSS) {
+            "Turn X"
+        } else {
+            "Turn O"
+        }
     }
+
 }
